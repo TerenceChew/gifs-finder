@@ -15,17 +15,18 @@ const createUrl = (searchTerm) => {
   return `https://${gifUrl}?api_key=${apiKey}&s=${searchTerm}`;
 };
 
-const getNewGif = (url) => {
-  fetch(url, { mode: "cors" })
-    .then((res) => res.json())
-    .then((data) => {
-      gifHolder.src = data.data.images.original.url;
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log("Error:", err);
-      gifHolder.src = errorGif;
-    });
+const getNewGif = async (url) => {
+  try {
+    const response = await fetch(url, { mode: "cors" });
+    const data = await response.json();
+
+    gifHolder.src = data.data.images.original.url;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log("Error:", err);
+
+    gifHolder.src = errorGif;
+  }
 };
 
 const handleBtnClick = () => {
